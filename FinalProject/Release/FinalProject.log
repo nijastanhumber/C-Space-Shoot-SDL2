@@ -1,0 +1,10 @@
+﻿  Bullet.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\Bullet.h(4): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Enemy.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\Enemy.h(4): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Game.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\Game.h(4): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  main.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\Game.h(4): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Player.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\Game.h(4): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
