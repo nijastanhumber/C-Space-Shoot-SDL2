@@ -13,11 +13,6 @@ private:
 	bool paused;
 	bool stayInMenu;
 
-	bool playerStraight;
-	bool playerRight;
-	bool playerLeft;
-	bool playerShoot;
-
 	const char *maxEnemies; // Will be our value from XML
 	int numEnemies;
 
@@ -86,6 +81,7 @@ public:
 	bool controls(SDL_Renderer *ren, bool stayInMenu);
 	int mainMenu(SDL_Renderer *ren, TTF_Font *font);
 	int pauseGame(SDL_Renderer *ren, TTF_Font *font);
+	void handlePlayerInputs();
 	void runGame();
 	void updateGame();
 	void renderScene();

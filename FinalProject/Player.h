@@ -23,12 +23,17 @@ public:
 	~Player();
 	SDL_Rect rect;
 	void CutAnimations();
-	void SetAnimation(bool playerStraight, bool playerRight, bool playerLeft);
+	void SetAnimation();
 	void render(SDL_Renderer *ren, SDL_Texture *pTexture);
 	void moveLeft();
 	void moveRight();
 	void moveUp();
 	void moveDown();
+
+	bool playerStraight;
+	bool playerRight;
+	bool playerLeft;
+	bool playerShoot;
 };
 
 #endif

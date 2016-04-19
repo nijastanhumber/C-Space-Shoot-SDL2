@@ -11,6 +11,11 @@ Player::Player()
 	this->rect.y = constants::SCREENHEIGHT - (24 * 5);
 	this->rect.w = (64 / 4) * 5;
 	this->rect.h = 24 * 5;
+
+	playerStraight = true;
+	playerRight = false;
+	playerLeft = false;
+	playerShoot = false;
 }
 
 Player::~Player()
@@ -50,7 +55,7 @@ void Player::CutAnimations()
 	}
 }
 
-void Player::SetAnimation(bool playerStraight, bool playerRight, bool playerLeft)
+void Player::SetAnimation()
 {
 	// Set animation clips
 	if (playerStraight)

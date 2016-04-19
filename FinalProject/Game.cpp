@@ -10,11 +10,6 @@ Game::Game()
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-
-	playerStraight = true;
-	playerRight = false;
-	playerLeft = false;
-	playerShoot = false;
 }
 
 void Game::init()
@@ -375,58 +370,43 @@ int Game::pauseGame(SDL_Renderer *ren, TTF_Font *font)
 	Mix_FreeChunk(sSelect);
 }
 
-void Game::updateGame()
+void Game::handlePlayerInputs()
 {
-	// Controls menu
-	if (stayInMenu) {
-		stayInMenu = controls(ren, stayInMenu);
-	}
-
-	// Scroll background
-	++scrollingOffset;
-	if (scrollingOffset / 3 > constants::SCREENHEIGHT)
-	{
-		scrollingOffset = 0;
-	}
-
-	// Set rects for scrolling background
-	renderQuad = { 0, int(scrollingOffset / 3.0f), int(constants::SCREENWIDTH), int(constants::SCREENHEIGHT) };
-	renderQuad1 = { 0, int(scrollingOffset / 3.0f - constants::SCREENHEIGHT), int(constants::SCREENWIDTH), int(constants::SCREENHEIGHT) };
-
 	// Gets state of keypress directly from keyboard instead of polling events. waaay better movement response
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	if (keys[SDL_SCANCODE_A])  // left
 	{
-		playerStraight = false;
-		playerRight = false;
-		playerLeft = true;
+		player->playerStraight = false;
+		player->playerRight = false;
+		player->playerLeft = true;
 		player->moveLeft();
-	} else if (keys[SDL_SCANCODE_D]) // right
+	}
+	else if (keys[SDL_SCANCODE_D]) // right
 	{
-		playerStraight = false;
-		playerLeft = false;
-		playerRight = true;
+		player->playerStraight = false;
+		player->playerLeft = false;
+		player->playerRight = true;
 		player->moveRight();
 	}
 	else
 	{
-		playerStraight = true;
-		playerLeft = false;
-		playerRight = false;
+		player->playerStraight = true;
+		player->playerLeft = false;
+		player->playerRight = false;
 	}
 	if (keys[SDL_SCANCODE_S]) // down
 	{
-		playerStraight = true;
-		playerLeft = false;
-		playerRight = false;
+		player->playerStraight = true;
+		player->playerLeft = false;
+		player->playerRight = false;
 		player->moveDown();
 	}
 	if (keys[SDL_SCANCODE_W]) // up
 	{
-		playerStraight = true;
-		playerLeft = false;
-		playerRight = false;
+		player->playerStraight = true;
+		player->playerLeft = false;
+		player->playerRight = false;
 		player->moveUp();
 	}
 	if (keys[SDL_SCANCODE_SPACE]) // Shoot
@@ -434,7 +414,7 @@ void Game::updateGame()
 		if (bullet == nullptr)
 		{
 			Mix_PlayChannel(2, sShoot, 0);
-			playerShoot = true;
+			player->playerShoot = true;
 			bullet = new Bullet(player->rect.x + 16, player->rect.y);
 		}
 	}
@@ -455,11 +435,8 @@ void Game::updateGame()
 		}
 	}
 
-	// Set player animation
-	player->SetAnimation(playerStraight, playerRight, playerLeft);
-
 	// Player shoot
-	if (playerShoot)
+	if (player->playerShoot)
 	{
 		// move bullet
 		if (bullet != nullptr) {
@@ -470,6 +447,28 @@ void Game::updateGame()
 			}
 		}
 	}
+}
+
+void Game::updateGame()
+{
+	// Controls menu
+	if (stayInMenu) {
+		stayInMenu = controls(ren, stayInMenu);
+	}
+
+	// Scroll background
+	++scrollingOffset;
+	if (scrollingOffset / 3 > constants::SCREENHEIGHT)
+	{
+		scrollingOffset = 0;
+	}
+
+	// Set rects for scrolling background
+	renderQuad = { 0, int(scrollingOffset / 3.0f), int(constants::SCREENWIDTH), int(constants::SCREENHEIGHT) };
+	renderQuad1 = { 0, int(scrollingOffset / 3.0f - constants::SCREENHEIGHT), int(constants::SCREENWIDTH), int(constants::SCREENHEIGHT) };
+
+	// Set player animation
+	player->SetAnimation();
 
 	// Moves enemies
 	for (int i = 0; i < numEnemies; i++) {
@@ -588,11 +587,13 @@ void Game::renderScene()
 	SDL_RenderPresent(ren);
 }
 
+// Game Loop
 void Game::runGame()
 {	
 	srand(time(NULL));
 	while (gameIsRunning)
 	{
+		handlePlayerInputs();
 		updateGame();
 		renderScene();
 	}
