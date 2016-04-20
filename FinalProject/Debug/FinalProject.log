@@ -1,2 +1,4 @@
-﻿  FinalProject.vcxproj -> C:\Users\Nijastan\Desktop\Game Programming\Year 1\Semester 2\Game Programming 2\FinalProject\Debug\FinalProject.exe
+﻿  Game.cpp
+c:\users\nijastan\desktop\game programming\year 1\semester 2\game programming 2\finalproject\finalproject\game.cpp(618): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  FinalProject.vcxproj -> C:\Users\Nijastan\Desktop\Game Programming\Year 1\Semester 2\Game Programming 2\FinalProject\Debug\FinalProject.exe
   FinalProject.vcxproj -> C:\Users\Nijastan\Desktop\Game Programming\Year 1\Semester 2\Game Programming 2\FinalProject\Debug\FinalProject.pdb (Partial PDB)

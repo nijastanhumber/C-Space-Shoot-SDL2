@@ -18,6 +18,11 @@ namespace constants
 {
 	const int SCREENWIDTH = 800;
 	const int SCREENHEIGHT = 600;
+	const int SCREEN_FPS = 60;
+	const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
+	const int PLAYERSPEED = 6;
+	const int BULLETSPEED = 13;
+	const int ENEMYSPEED = 2;
 }
 
 #endif

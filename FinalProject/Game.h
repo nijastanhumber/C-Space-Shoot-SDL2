@@ -5,6 +5,7 @@
 #include "Bullet.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "Timer.h"
 
 class Game
 {
@@ -28,12 +29,12 @@ private:
 	float scrollingOffset = 0; // For scrolling background
 
 	// Video related
-	SDL_Window *win;
-	SDL_Renderer *ren;
+	SDL_Window *win = NULL; // remember to change
+	SDL_Renderer *ren = NULL;
 
 	SDL_Event events;
 
-	//Textures
+	// Textures
 	SDL_Texture *enemyTexture;
 	SDL_Texture *enemyExplosion;
 	SDL_Texture *bulletTexture;
@@ -43,6 +44,13 @@ private:
 	SDL_Texture *UIScore;
 	SDL_Texture *UILives;
 	SDL_Texture *UIHighScore;
+
+	// Frame rate stuff
+	Timer fpsTimer;
+	Timer capTimer;
+	int countedFrames = 0;
+	float avgFPS;
+	int frameTicks;
 
 	//SDL rects
 	SDL_Rect explosionRect;
@@ -86,6 +94,8 @@ public:
 	void updateGame();
 	void renderScene();
 	void destroy();
+
+	void capFrameRate();
 
 };
 

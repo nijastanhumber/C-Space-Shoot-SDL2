@@ -6,6 +6,8 @@ Game::Game()
 	gameIsRunning = true;
 	paused = false;
 
+	//countedFrames = 0;
+
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
@@ -25,7 +27,9 @@ void Game::init()
 	highScore = ssHighScore.str();
 
 	// create window and renderer
-	SDL_CreateWindowAndRenderer(constants::SCREENWIDTH, constants::SCREENHEIGHT, NULL, &win, &ren);
+	win = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, constants::SCREENWIDTH, constants::SCREENHEIGHT, SDL_WINDOW_SHOWN);
+	ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
+	//SDL_CreateWindowAndRenderer(constants::SCREENWIDTH, constants::SCREENHEIGHT, NULL, &win, &ren);
 
 	// Background music and sound effects
 	bMusic = Mix_LoadMUS("backgroundmusic.mp3");
@@ -370,6 +374,28 @@ int Game::pauseGame(SDL_Renderer *ren, TTF_Font *font)
 	Mix_FreeChunk(sSelect);
 }
 
+void Game::capFrameRate()
+{
+	fpsTimer.start();
+	capTimer.start();
+	avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+
+	if (avgFPS > 2000000)
+	{
+		avgFPS = 0;
+	}
+
+	++countedFrames;
+
+	//If frame finished early
+	frameTicks = capTimer.getTicks();
+	if (frameTicks < constants::SCREEN_TICK_PER_FRAME)
+	{
+		//Wait remaining time
+		SDL_Delay(constants::SCREEN_TICK_PER_FRAME - frameTicks);
+	}
+}
+
 void Game::handlePlayerInputs()
 {
 	// Gets state of keypress directly from keyboard instead of polling events. waaay better movement response
@@ -527,9 +553,9 @@ void Game::updateGame()
 		UILives = loadText(ren, "Lives: 3", 18);
 		SDL_RenderCopy(ren, gameover, NULL, &gameoverRect);
 		SDL_RenderPresent(ren);
+		SDL_Delay(5000);
 		Mix_PauseMusic();
 		Mix_PlayChannel(-1, sExplode, 0);
-		SDL_Delay(5000);
 		Mix_RewindMusic();
 		Mix_ResumeMusic();
 		for (int i = 0; i < numEnemies; i++) {
@@ -548,8 +574,6 @@ void Game::updateGame()
 			}
 		}
 	}
-	// Set better frame rate so things don't move too fast.
-	SDL_Delay(10);
 }
 
 void Game::renderScene()
@@ -559,6 +583,20 @@ void Game::renderScene()
 	//Render background
 	SDL_RenderCopy(ren, background, NULL, &renderQuad);
 	SDL_RenderCopy(ren, background, NULL, &renderQuad1);
+
+	// Render bullet
+	if (bullet != nullptr)
+		SDL_RenderCopy(ren, bulletTexture, NULL, &bullet->rect);
+
+	// Render enemies and explosion
+	for (int i = 0; i < numEnemies; i++) {
+		enemies[i].render(ren, enemyTexture);
+		if (enemies[i].expFrame < 30) // Only render 1 full animation
+			enemies[i].renderExplosion(ren, enemyExplosion, explosionRect);
+	}
+
+	// Render player
+	player->render(ren, pTexture);
 
 	// Render score, lives, and highscore
 	ssScore.str(std::string()); // clear stringstream of old variables
@@ -570,20 +608,6 @@ void Game::renderScene()
 	SDL_RenderCopy(ren, UILives, NULL, &UILivesRect);
 	SDL_RenderCopy(ren, UIHighScore, NULL, &UIHighScoreRect);
 
-	// Render bullet
-	if (bullet != nullptr)
-		SDL_RenderCopy(ren, bulletTexture, NULL, &bullet->rect);
-
-	// Render enemies and explosion
-	for (int i = 0; i < numEnemies; i++) {
-		enemies[i].render(ren, enemyTexture);
-		if (enemies[i].expFrame < 100) // Only render 1 full animation
-			enemies[i].renderExplosion(ren, enemyExplosion, explosionRect);
-	}
-
-	// Render player
-	player->render(ren, pTexture);
-
 	// render
 	SDL_RenderPresent(ren);
 }
@@ -594,6 +618,7 @@ void Game::runGame()
 	srand(time(NULL));
 	while (gameIsRunning)
 	{
+		capFrameRate();
 		handlePlayerInputs();
 		updateGame();
 		renderScene();
@@ -619,6 +644,8 @@ void Game::destroy()
 	Mix_FreeMusic(bMusic);
 	SDL_DestroyRenderer(ren);
 	SDL_DestroyWindow(win);
+	win = NULL;
+	ren = NULL;
 
 	Mix_Quit();
 	TTF_Quit();

@@ -51,19 +51,19 @@ void Enemy::CutAnimExplode()
 
 void Enemy::render(SDL_Renderer *ren, SDL_Texture *eTexture)
 {
-	eFlyClip = &eFlyRectSrc[eFlyFrame / 10];
+	eFlyClip = &eFlyRectSrc[eFlyFrame / 5];
 
 	SDL_RenderCopy(ren, eTexture, eFlyClip, &rect);
 
 	// update enemy frame
 	++eFlyFrame;
-	if (eFlyFrame / 10 >= eFlyAnims)
+	if (eFlyFrame / 5 >= eFlyAnims)
 		eFlyFrame = 0;
 }
 
 void Enemy::renderExplosion(SDL_Renderer *ren, SDL_Texture *explosion, SDL_Rect bullet)
 {
-	expClip = &expRectSrc[expFrame / 10];
+	expClip = &expRectSrc[expFrame / 3];
 	//SDL_Rect *tempRect = &rect;
 	if (hit)
 		SDL_RenderCopy(ren, explosion, expClip, &bullet);
@@ -81,20 +81,6 @@ void Enemy::Respawn()
 
 void Enemy::moveStraight()
 {
-	this->rect.y++;
-}
-
-void Enemy::moveRightSide()
-{
-	if (rect.y < (0 - rect.h))
-		this->rect.y++;
-	else
-	{
-		this->rect.x++;
-		this->rect.y++;
-	}
-
-	if (this->rect.x + this->rect.w > constants::SCREENWIDTH)
-		this->rect.x = 0 - this->rect.w;
+	this->rect.y+=constants::ENEMYSPEED;
 }
 

@@ -15,5 +15,5 @@ Bullet::~Bullet()
 
 void Bullet::moveStep()
 {
-	this->rect.y -= 10;
+	this->rect.y -= constants::BULLETSPEED;
 }

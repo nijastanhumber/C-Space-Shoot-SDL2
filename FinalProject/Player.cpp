@@ -60,15 +60,15 @@ void Player::SetAnimation()
 	// Set animation clips
 	if (playerStraight)
 	{
-		pFlyClip = &pFlyStraightRectSrc[pFlyFrame / 10];
+		pFlyClip = &pFlyStraightRectSrc[pFlyFrame / 5];
 	}
 	else if (playerRight)
 	{
-		pFlyClip = &pFlyRightRectSrc[pFlyFrame / 10];
+		pFlyClip = &pFlyRightRectSrc[pFlyFrame / 5];
 	}
 	else if (playerLeft)
 	{
-		pFlyClip = &pFlyLeftRectSrc[pFlyFrame / 10];
+		pFlyClip = &pFlyLeftRectSrc[pFlyFrame / 5];
 	}
 }
 
@@ -78,7 +78,7 @@ void Player::render(SDL_Renderer *ren, SDL_Texture *pTexture)
 
 	// update player frame
 	++pFlyFrame;
-	if (pFlyFrame / 10 >= pFlyAnims)
+	if (pFlyFrame / 5 >= pFlyAnims)
 		pFlyFrame = 0;
 }
 
@@ -88,7 +88,7 @@ void Player::moveLeft()
 	if (rect.x < 0)
 		speed = 0;
 	else
-		speed = 5;
+		speed = constants::PLAYERSPEED;
 	this->rect.x -= speed;
 }
 
@@ -98,7 +98,7 @@ void Player::moveRight()
 	if (rect.x + rect.w > constants::SCREENWIDTH)
 		speed = 0;
 	else
-		speed = 5;
+		speed = constants::PLAYERSPEED;
 	this->rect.x += speed;
 }
 
@@ -108,7 +108,7 @@ void Player::moveUp()
 	if (rect.y < 0)
 		speed = 0;
 	else
-		speed = 5;
+		speed = constants::PLAYERSPEED;
 	this->rect.y -= speed;
 }
 
@@ -118,6 +118,6 @@ void Player::moveDown()
 	if (rect.y + rect.h > constants::SCREENHEIGHT)
 		speed = 0;
 	else
-		speed = 5;
+		speed = constants::PLAYERSPEED;
 	this->rect.y += speed;
 }

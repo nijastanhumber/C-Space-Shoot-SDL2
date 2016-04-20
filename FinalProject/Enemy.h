@@ -34,7 +34,6 @@ public:
 	void Respawn();
 
 	void moveStraight();
-	void moveRightSide();
 
 	int expFrame;
 	bool hit;
