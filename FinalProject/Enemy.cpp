@@ -79,7 +79,22 @@ void Enemy::Respawn()
 	//this->hit = false;
 }
 
-void Enemy::moveStep()
+void Enemy::moveStraight()
 {
 	this->rect.y++;
 }
+
+void Enemy::moveRightSide()
+{
+	if (rect.y < (0 - rect.h))
+		this->rect.y++;
+	else
+	{
+		this->rect.x++;
+		this->rect.y++;
+	}
+
+	if (this->rect.x + this->rect.w > constants::SCREENWIDTH)
+		this->rect.x = 0 - this->rect.w;
+}
+

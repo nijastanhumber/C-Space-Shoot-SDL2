@@ -33,7 +33,8 @@ public:
 	SDL_Rect rect;
 	void Respawn();
 
-	void moveStep();
+	void moveStraight();
+	void moveRightSide();
 
 	int expFrame;
 	bool hit;

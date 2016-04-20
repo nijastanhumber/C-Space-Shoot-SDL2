@@ -471,9 +471,9 @@ void Game::updateGame()
 	player->SetAnimation();
 
 	// Moves enemies
-	for (int i = 0; i < numEnemies; i++) {
-		enemies[i].moveStep();
-	}
+		for (int i = 0; i < numEnemies; i++)
+			enemies[i].moveStraight();
+
 
 	// if Enemy-bullet collision, respawn enemies and add points
 	for (int i = 0; i < numEnemies; i++) {
@@ -496,6 +496,7 @@ void Game::updateGame()
 			life = ssLives.str();
 			UILives = loadText(ren, life.c_str(), 20);
 		}
+		// If enemy collides with player, respawn enemy and lose a life
 		else if (SDL_HasIntersection(&enemies[i].rect, &player->rect)) {
 			enemies[i].hit = true;
 			enemies[i].expFrame = 0;
@@ -538,7 +539,7 @@ void Game::updateGame()
 		points = 0;
 	}
 
-	// Make sure enemies don't respawn on top of each other
+	// Makes sure enemies don't respawn on top of each other
 	for (int i = 0; i < (numEnemies - 1); i++) {
 		for (int j = (i + 1); j < numEnemies; j++) {
 			if (SDL_HasIntersection(&enemies[i].rect, &enemies[j].rect))

@@ -13,7 +13,7 @@ private:
 	bool paused;
 	bool stayInMenu;
 
-	const char *maxEnemies; // Will be our value from XML
+	const char *maxEnemies; // Will be our value from XML. Set at 4. Don't change the XML value to be anymore than 6 or game will be too hard
 	int numEnemies;
 
 	Player *player;
