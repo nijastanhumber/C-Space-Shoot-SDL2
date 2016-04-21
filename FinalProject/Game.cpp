@@ -553,8 +553,8 @@ void Game::updateGame()
 		UILives = loadText(ren, "Lives: 3", 18);
 		SDL_RenderCopy(ren, gameover, NULL, &gameoverRect);
 		SDL_RenderPresent(ren);
-		SDL_Delay(5000);
 		Mix_PauseMusic();
+		SDL_Delay(5000);
 		Mix_PlayChannel(-1, sExplode, 0);
 		Mix_RewindMusic();
 		Mix_ResumeMusic();
